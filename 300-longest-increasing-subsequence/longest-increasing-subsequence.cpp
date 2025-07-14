@@ -14,7 +14,7 @@ public:
             dp[i]=max(dp[i],1+dp[j]);
             ans=max(ans,dp[i]);
         }
-        for(auto it:dp)cout<<it<<" ";
+        //for(auto it:dp)cout<<it<<" ";
         return ans;
     }
 };
