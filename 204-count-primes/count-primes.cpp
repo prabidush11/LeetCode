@@ -2,12 +2,13 @@ class Solution {
 public:
     void sieve(vector<int> &primes)
     {
-        int i,j,m=primes.size(),n=m-1;
+        int i,m=primes.size(),n=m-1;
+        long long j;
         for(i=2;i<=n;i++)
         {
             if(primes[i])
             {
-                for(j=2*i;j<=n;j+=i)
+                for(j=i*1ll*i;j<=n;j+=i)
                 primes[j]=0;
             }
         }
