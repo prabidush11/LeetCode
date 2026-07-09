@@ -15,10 +15,10 @@ public:
             for (int j = 0; j <= n2; j++) {
 
                 if (i > 0 && s1[i - 1] == s3[i + j - 1])
-                    dp[i][j] =dp[i][j] || dp[i - 1][j];
+                    dp[i][j] =dp[i][j] | dp[i - 1][j];
 
                 if (j > 0 && s2[j - 1] == s3[i + j - 1])
-                    dp[i][j] = dp[i][j] ||dp[i][j - 1];
+                    dp[i][j] = dp[i][j] |dp[i][j - 1];
             }
         }
 
