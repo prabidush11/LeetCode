@@ -1,19 +1,38 @@
 class Solution {
-    int merge(vector<int>&nums,int low,int mid,int high)
+public:
+    int calculate_score(vector<int>&nums,int start,int mid,int end)
     {
-        int ptr1=low,ptr2=mid+1;
-        int sum=0;
-        vector<int> temp;
-        for (ptr1 = low; ptr1 <= mid; ptr1++) {
-            while (ptr2 <= high && (long long)nums[ptr1] > 2LL * nums[ptr2]) {
+        //using two pointers
+        //calculate the score
+        //both halves are sorted internally
+        //and their indexes do no interfere
+        //their individual scores are calculated
+        //so we need to check for both the sorted halves
+        int ptr1=start,ptr2=mid+1;
+        int score=0;
+        while(ptr1<=mid)
+        {
+            while(ptr2<=end && nums[ptr1]>2LL*nums[ptr2])
+            {
                 ptr2++;
             }
-            sum += (ptr2 - (mid + 1));
+            score+=ptr2-(mid+1);
+            ptr1++;
         }
-        ptr1=low;ptr2=mid+1;
-        while(ptr1<=mid && ptr2<=high)
+        return score;
+    }
+    int merge(vector<int>&nums,int start,int mid,int end)
+    {
+        int ptr1=start;
+        int ptr2=mid+1;
+        //calculate score first;
+        //before merging calculate score;
+        int score=calculate_score(nums,start,mid,end);
+        //score calculated here, now sort the array
+        vector<int> temp;
+        while(ptr1<=mid && ptr2<=end)
         {
-            if(nums[ptr1]<=nums[ptr2])
+            if(nums[ptr1]<nums[ptr2])
             {
                 temp.push_back(nums[ptr1]);
                 ptr1++;
@@ -25,33 +44,28 @@ class Solution {
             }
         }
         while(ptr1<=mid)
+        temp.push_back(nums[ptr1++]);
+        while(ptr2<=end)
+        temp.push_back(nums[ptr2++]);
+        //copy temp in nums
+        for(int i=0;i<=end-start;i++)
         {
-            temp.push_back(nums[ptr1]);
-            ptr1++;
+            nums[start+i]=temp[i];
         }
-        while(ptr2<=high)
-        {
-            temp.push_back(nums[ptr2]);
-            ptr2++;
-        }
-        for(int i=0;i<high-low+1;i++)
-        nums[low+i]=temp[i];
-        return sum;
-
+        return score;
     }
-    int mergesort(vector<int>& nums,int low, int high)
+    int mergesort(vector<int>&nums,int start,int end)
     {
-        if(low==high)
-        return 0;
-        int mid=(low+high)/2,sum=0;
-        sum+=mergesort(nums,low,mid);
-        sum+=mergesort(nums,mid+1,high);
-        sum+=merge(nums,low,mid,high);
-        return sum;
+        if(start>=end) return 0;
+        int mid=start+(end-start)/2;
+        int score=0;
+        score+=mergesort(nums,start,mid);
+        score+=mergesort(nums,mid+1,end);
+        score+=merge(nums,start,mid,end);
+        return score;
     }
-public:
     int reversePairs(vector<int>& nums) {
-        //just do some merge sort
+        //mergesort algo
         return mergesort(nums,0,nums.size()-1);
     }
 };
