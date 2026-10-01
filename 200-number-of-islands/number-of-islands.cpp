@@ -3,7 +3,7 @@ public:
     int numIslands(vector<vector<char>>& grid) {
         int n=grid.size();
         int m=grid[0].size();
-        queue<pair<int,int>> q;
+        stack<pair<int,int>> q;
         int count=0;
         for(int i=0;i<n;i++)
         {
@@ -14,7 +14,7 @@ public:
                     q.push({i,j});
                     while(!q.empty())
                     {
-                        auto [cx,cy]=q.front();
+                        auto [cx,cy]=q.top();
                         q.pop();
                         if(cx>=1 && grid[cx-1][cy]=='1')
                         {
