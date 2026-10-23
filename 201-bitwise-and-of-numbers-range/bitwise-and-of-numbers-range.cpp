@@ -2,7 +2,7 @@ class Solution {
 public:
     int rangeBitwiseAnd(int l, int r) {
         //need to find their common prefix
-        int ans=0;
+        //int ans=0;
         bitset<31> left(l);
         bitset<31> right(r);
         int idx=30;
@@ -14,10 +14,8 @@ public:
         idx++;
         //this is the common prefix
         //next itll be zero
-        for(int power=30;power>=idx;power--)
-        {
-            ans+=left[power]*pow(2,power);
-        }
-        return ans;
+        l=l>>idx;
+        l=l<<idx;
+        return l;
     }
 };
