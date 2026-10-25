@@ -8,7 +8,7 @@ var compose = function(functions) {
     return function(x) {
         functions.forEach(function(val){
             x=val(x);
-            console.log(x);
+            //console.log(x);
         })
         
         return x;
