@@ -20,7 +20,7 @@ public:
         {
             int current=q.front();
             q.pop();
-            cout<<current<<" ";
+            //cout<<current<<" ";
             for(auto it:adj[current])
             {
                 indegree[it]--;
