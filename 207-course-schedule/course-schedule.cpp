@@ -24,13 +24,13 @@ public:
             for(int &it:adj[current])
             {
                 indegree[it]--;
-                if(indegree[it]==0)
+                if(!indegree[it])
                 q.push(it);
             }
         }
         //after queue is processed, check 
         for(int &it:indegree)
-        if(it!=0)
+        if(it)
         return false;
         return true;
     }
