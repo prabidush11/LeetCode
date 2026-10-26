@@ -1,37 +1,34 @@
 class Solution {
+    bool dfs(vector<vector<int>>&adj,vector<bool>&path,vector<bool>&visited,int current)
+    {
+        visited[current]=true;
+        path[current]=true;
+        for(int it:adj[current])
+        {
+            if(path[it])
+            return true;
+            if(!visited[it] && dfs(adj,path,visited,it))
+            return true;
+        }
+        path[current]=false;
+        return false;
+    }
 public:
     bool canFinish(int n, vector<vector<int>>& pre) {
-        //using kahns algo
+        //will solve this question using dfs+path tracking tomorrow
         vector<vector<int>> adj(n);
-        for(vector<int> &it:pre)
+        for(auto it:pre)
         {
             adj[it[1]].push_back(it[0]);
         }
-        vector<int> indegree(n,0);
-        for(vector<int> &it:pre)
+        vector<bool> path(n,false),visited(n,false);
+        int i;
+        for(i=0;i<n;i++)
         {
-            indegree[it[0]]++;
+            if(!visited[i] && dfs(adj,path,visited,i))
+            break;
         }
-        queue<int>q;
-        for(int i=0;i<n;i++)
-        if(indegree[i]==0)
-        q.push(i);
-        while(!q.empty())
-        {
-            int current=q.front();
-            q.pop();
-            //cout<<current<<" ";
-            for(int &it:adj[current])
-            {
-                indegree[it]--;
-                if(!indegree[it])
-                q.push(it);
-            }
-        }
-        //after queue is processed, check 
-        for(int &it:indegree)
-        if(it)
+        if(i==n) return true;
         return false;
-        return true;
     }
 };
