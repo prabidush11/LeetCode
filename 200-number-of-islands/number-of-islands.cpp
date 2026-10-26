@@ -1,49 +1,41 @@
 class Solution {
+    void bfs(vector<vector<char>>& grid,int row,int col)
+    {
+        queue<pair<int,int>>q;
+        q.push({row,col});
+        grid[row][col]='0';
+        vector<int> dirx={0,0,1,-1};
+        vector<int> diry={1,-1,0,0};
+        while(!q.empty())
+        {
+            auto [i,j]=q.front();
+            q.pop();
+            for(int k=0;k<4;k++)
+            {
+                if(i+dirx[k]>=0 && i+dirx[k]<grid.size() && j+diry[k]>=0 && j+diry[k]<grid[0].size() && grid[i+dirx[k]][j+diry[k]]=='1')
+                {
+                    grid[i+dirx[k]][j+diry[k]]='0';
+                    q.push({i+dirx[k],j+diry[k]});
+                }
+            }
+        }
+    }
 public:
     int numIslands(vector<vector<char>>& grid) {
+        int ans=0;
         int n=grid.size();
         int m=grid[0].size();
-        stack<pair<int,int>> q;
-        int count=0;
         for(int i=0;i<n;i++)
         {
             for(int j=0;j<m;j++)
             {
-                if(grid[i][j]!='0')
+                if(grid[i][j]=='1')
                 {
-                    q.push({i,j});
-                    while(!q.empty())
-                    {
-                        auto [cx,cy]=q.top();
-                        q.pop();
-                        if(cx>=1 && grid[cx-1][cy]=='1')
-                        {
-                            q.push({cx-1,cy});
-                            grid[cx-1][cy]='0';
-                        }
-                        
-                        if(cx<=n-2 && grid[cx+1][cy]=='1') 
-                        {
-                            q.push({cx+1,cy});
-                            grid[cx+1][cy]='0';
-                        }
-
-                        if(cy>=1 && grid[cx][cy-1]=='1')
-                        {
-                            q.push({cx,cy-1});
-                            grid[cx][cy-1]='0';
-                        }
-                        
-                        if(cy<=m-2 && grid[cx][cy+1]=='1')
-                        {
-                            q.push({cx,cy+1}); 
-                            grid[cx][cy+1]='0';
-                        }
-                    }
-                    count++;
+                    ans++;
+                    bfs(grid,i,j);
                 }
             }
         }
-        return count;
+        return ans;
     }
 };
