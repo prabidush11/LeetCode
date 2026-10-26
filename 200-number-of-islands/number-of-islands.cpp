@@ -1,23 +1,11 @@
 class Solution {
-    void bfs(vector<vector<char>>& grid,int row,int col)
+    void dfs(vector<vector<char>>& grid,int row,int col,vector<int>&drow,vector<int>&dcol)
     {
-        queue<pair<int,int>>q;
-        q.push({row,col});
         grid[row][col]='0';
-        vector<int> dirx={0,0,1,-1};
-        vector<int> diry={1,-1,0,0};
-        while(!q.empty())
+        for(int k=0;k<4;k++)
         {
-            auto [i,j]=q.front();
-            q.pop();
-            for(int k=0;k<4;k++)
-            {
-                if(i+dirx[k]>=0 && i+dirx[k]<grid.size() && j+diry[k]>=0 && j+diry[k]<grid[0].size() && grid[i+dirx[k]][j+diry[k]]=='1')
-                {
-                    grid[i+dirx[k]][j+diry[k]]='0';
-                    q.push({i+dirx[k],j+diry[k]});
-                }
-            }
+            if(row+drow[k]>=0 && row+drow[k]<grid.size() && col+dcol[k]>=0 && col+dcol[k]<grid[0].size() && grid[row+drow[k]][col+dcol[k]]=='1')
+            dfs(grid,row+drow[k],col+dcol[k],drow,dcol);
         }
     }
 public:
@@ -25,6 +13,8 @@ public:
         int ans=0;
         int n=grid.size();
         int m=grid[0].size();
+        vector<int> drow={0,0,1,-1};
+        vector<int> dcol={1,-1,0,0};
         for(int i=0;i<n;i++)
         {
             for(int j=0;j<m;j++)
@@ -32,7 +22,7 @@ public:
                 if(grid[i][j]=='1')
                 {
                     ans++;
-                    bfs(grid,i,j);
+                    dfs(grid,i,j,drow,dcol);
                 }
             }
         }
