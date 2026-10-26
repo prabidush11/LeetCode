@@ -1,21 +1,18 @@
 class Solution {
-    bool bfs(vector<vector<int>>&adj,vector<int>&visited,int start)
+    bool dfs(vector<vector<int>>& adj,vector<int>&visited,int current,int parent)
     {
-        queue<int>q;
-        visited[start]=1;
-        q.push(start);
-        while(!q.empty())
+        if(parent==-1) visited[current]=1;
+        else
+        visited[current]=visited[parent]==1?2:1;
+        for(auto it:adj[current])
         {
-            int current=q.front();
-            q.pop();
-            for(auto it:adj[current])
+            if(visited[it]==visited[current])
             {
-                if(visited[it]==0)
-                {
-                    visited[it]=(visited[current]==1)?2:1;
-                    q.push(it);
-                }
-                else if(visited[it]==visited[current])
+                return false;
+            }
+            else if(visited[it]==0)
+            {
+                if(!dfs(adj,visited,it,current))
                 return false;
             }
         }
@@ -23,13 +20,16 @@ class Solution {
     }
 public:
     bool isBipartite(vector<vector<int>>& adj) {
-        //using bfs first maybe
+        //using dfs now
         int n=adj.size();
-        vector<int> visited(n,0);//0-not visited 1-red 2-blue
+        vector<int>visited(n,0);
+        //0 not visited 1 red 2 blue
         for(int i=0;i<n;i++)
         {
-            if(!visited[i] && !bfs(adj,visited,i))
-            return false;
+            if(!visited[i])
+            {
+                if(!dfs(adj,visited,i,-1)) return false;
+            }
         }
         return true;
     }
