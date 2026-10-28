@@ -16,6 +16,7 @@ public:
             auto [row,col]=coord;
             pq.pop();
             explored[row][col]=true;
+            //count++;
             for(int i=0;i<4;i++)
             {
                 //if the coordinate exists
