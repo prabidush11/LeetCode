@@ -19,7 +19,7 @@ public:
             //cout<<k<<" "<<node<<" "<<dist<<"\n";
             q.pop();
             if(k==kmax+1)
-            continue;
+            break;
             for(auto it:adj[node])
             {
                 if(distance[it.first]==-1 || distance[it.first]>dist+it.second)
