@@ -21,6 +21,7 @@ public:
             exp++;
             pq.pop();
             explored[current]=true;
+            if(current==end_node) return probability[end_node];
             for(auto it:adj[current])
             {
                 if(!explored[it.first])
