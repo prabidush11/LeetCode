@@ -11,12 +11,14 @@ public:
         vector<bool>explored(n,false);
         vector<double> probability(n,0);
         priority_queue<pair<double,int>>pq;
+        int exp=0;
         pq.push({1,start_node});
         probability[start_node]=1;
-        while(!pq.empty())
+        while(!pq.empty() && exp<n)
         {
             auto [prob,current]=pq.top();
-            cout<<current<<" ";
+            //cout<<current<<" ";
+            exp++;
             pq.pop();
             explored[current]=true;
             for(auto it:adj[current])
