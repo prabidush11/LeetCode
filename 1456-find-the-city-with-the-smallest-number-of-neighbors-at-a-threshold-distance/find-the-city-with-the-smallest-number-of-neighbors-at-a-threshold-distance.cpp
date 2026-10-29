@@ -1,67 +1,57 @@
 class Solution {
-    int count(vector<vector<pair<int,int>>>&adj,int& threshold,int start)
-    {
-        //using dijkstra now
-        int n=adj.size();
-        vector<int>distance(n,-1);
-        vector<bool>explored(n,false);
-        priority_queue<pair<int,int>,vector<pair<int,int>>,greater<pair<int,int>>>pq;
-        pq.push({0,start});
-        distance[start]=0;
-        while(!pq.empty())
+public:
+    int findTheCity(int n, vector<vector<int>>& edges, int threshold) {
+        //first thing is to make the adj matrix only
+        //using flloyd warshall
+        //all pair shortest path
+        //visit a to b eveythime from node 0 to n-1
+        //first make the adjcency matrix
+        vector<vector<int>> matrix(n,vector<int>(n,INT_MAX/2));
+        //-1 means no edge
+        for(int i=0;i<n;i++)
+        matrix[i][i]=0;
+        for(auto it:edges)
         {
-            auto[dist,current]=pq.top();
-            pq.pop();
-            explored[current]=true;
-            for(auto it:adj[current])
+            if(it[2]>threshold)
+            continue;
+            matrix[it[0]][it[1]]=it[2];
+            matrix[it[1]][it[0]]=it[2];
+        }
+        //now relaxation for every node
+        for(int k=0;k<n;k++)
+        {
+            //from every edges to every edge through i
+            for(int i=0;i<n;i++)
             {
-                if(!explored[it.first])
+                for(int j=0;j<n;j++)
                 {
-                    if(distance[it.first]==-1 || distance[it.first]>dist+it.second)
+                    if(matrix[i][k]+matrix[k][j]<=threshold)
                     {
-                        if(dist+it.second<=threshold)
-                        {distance[it.first]=dist+it.second;
-                        pq.push({distance[it.first],it.first});}
+                        matrix[i][j]=min(matrix[i][j],matrix[i][k]+matrix[k][j]);
                     }
                 }
             }
         }
-        //dijkstra done
-        //now i have the nearest path to every vertex right
-        //lets see
-        //cout<<start<<" : ";
-        int count=0;
-        for(auto it:distance)
-        {
-            if(it>0)
-            count++;
-        }
-        //cout<<endl;
-        return count;
-    }
-public:
-    int findTheCity(int n, vector<vector<int>>& edges, int threshold) {
-        //first thing is to make the adj matrix only
-        vector<vector<pair<int,int>>>adj(n);
-        for(auto it:edges)
-        {
-            adj[it[0]].push_back({it[1],it[2]});
-            adj[it[1]].push_back({it[0],it[2]});
-        }
-        
-        //question is saare nodes ka threshold diatnec pe kitne cities hai ye khojo
-        //sawaal ye hai
-        vector<int>cities(n,0);
+        //matrix is ready
+        //finally check
+        int mincities=INT_MAX;
+        int ans=0;
         for(int i=0;i<n;i++)
         {
-            int start=i;
-            cities[start]=count(adj,threshold,start);
+            int count=0;
+            for(int j=0;j<n;j++)
+            {
+                //cout<<matrix[i][j]<<" ";
+                if(matrix[i][j]!=INT_MAX/2)
+                count++;
+            }
+            //cout<<"\n";
+            if(count<=mincities)
+            {
+                ans=i;
+                mincities=count;
+            }
         }
-        int ans=0,maxcities=INT_MAX;
-        for(int i=0;i<n;i++)
-        if(maxcities>=cities[i])
-        {maxcities=cities[i];
-        ans=i;}
         return ans;
     }
 };
