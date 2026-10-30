@@ -17,7 +17,7 @@ public:
         while(number<n*n-1)
         {
             int next=number+1;
-            cout<<next<<" "<<mp[next].first<<mp[next].second<<"\n";
+            //cout<<next<<" "<<mp[next].first<<mp[next].second<<"\n";
             //check if mp[next] is one of the 8 directions or not
             bool found=false;
             for(int i=0;i<8;i++)
